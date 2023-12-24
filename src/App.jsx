@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Login, Register } from "./components";
+import { AuthPage } from "./components";
 import { AuthContext } from "./context/authContext";
 
 const App = () => {
@@ -14,10 +14,7 @@ const App = () => {
 
   return (
     <main>
-      <h1>
-        <b>Auth with</b> <span>Firebase</span> <b>and</b> <span>React</span>
-      </h1>
-      {status === "authenticated" && userId ? <HomePage /> : <AuthPage />}
+      {status === "authenticated" && userId ? <HomePage /> : <AutPage />}
     </main>
   );
 };
@@ -39,11 +36,10 @@ export const HomePage = () => {
   );
 };
 
-export const AuthPage = () => {
+export const AutPage = () => {
   return (
     <section>
-      <Login />
-      <Register />
+      <AuthPage />
     </section>
   );
 };
