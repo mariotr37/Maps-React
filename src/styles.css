@@ -59,6 +59,10 @@ body {
   cursor: pointer;
 }
 
+.button-common:hover {
+  opacity: 0.9;
+}
+
 .submit {
   background-color: #512da8;
 }
@@ -87,6 +91,50 @@ body {
   border-radius: 8px;
   width: 100%;
   outline: none;
+}
+
+.container input:focus {
+  border: 1px solid #512da8;
+}
+
+.btn-upload {
+  background-color: transparent;
+  position: relative;
+  color: #512da8;
+  border: 1px dashed #512da8;
+  margin: 8px 0;
+  padding: 10px 15px;
+  border-radius: 8px;
+  width: 100%;
+  transition: all 0.2s;
+  outline: none;
+  overflow: hidden;
+}
+
+.btn-upload i {
+  font-size: 18px;
+  margin-right: 5px;
+}
+
+.btn-upload span {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.btn-upload input {
+  cursor: pointer;
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform: scale(3);
+  opacity: 0;
+}
+
+.btn-upload:hover {
+  background-color: #512da8;
+  color: #fff;
+  border: 1px solid #512da8;
 }
 
 .form-container {
@@ -147,6 +195,8 @@ body {
   margin: 0 3px;
   width: 40px;
   height: 40px;
+  cursor: pointer;
+  transition: all 0.3s;
 }
 
 .social-icons button:hover {

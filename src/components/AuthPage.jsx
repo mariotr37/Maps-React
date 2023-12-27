@@ -107,6 +107,20 @@ export const AuthPage = () => {
             <form onSubmit={handleSubmitRegister}>
               <h1>Crear Cuenta</h1>
               <span>Ingresa tus datos para registrarte</span>
+              <button className="btn-upload" type="button">
+                <i className="fa-solid fa-camera"></i>
+                <span>{photo ? photo?.name : "SUBIR FOTO"}</span>
+                <input
+                  name="photo"
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) =>
+                    handleChange({
+                      target: { name: "photo", value: e.target.files[0] },
+                    })
+                  }
+                />
+              </button>
               <input
                 name="firstName"
                 type="text"
@@ -141,16 +155,6 @@ export const AuthPage = () => {
                 placeholder="Contraseña"
                 onChange={handleChange}
                 value={pass}
-              />
-              <input
-                name="photo"
-                type="file"
-                accept="image/*"
-                onChange={(e) =>
-                  handleChange({
-                    target: { name: "photo", value: e.target.files[0] },
-                  })
-                }
               />
               <button className="button-common submit" type="submit">
                 Registrarse
