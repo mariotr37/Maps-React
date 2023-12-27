@@ -1,15 +1,18 @@
 import {
   createUserWithEmailAndPassword,
+  updateProfile,
   GoogleAuthProvider,
   onAuthStateChanged,
   signInWithEmailAndPassword,
   signInWithPopup,
 } from "firebase/auth";
-import { FirebaseAuth } from "./config";
+import { doc, setDoc } from "firebase/firestore";
+import { uploadString, getDownloadURL, ref } from "firebase/storage";
+import { FirebaseAuth, Firestore, Storage } from "./config";
 
 const googleProvider = new GoogleAuthProvider();
 
-export const singInWithGoogle = async () => {
+const singInWithGoogle = async () => {
   try {
     const result = await signInWithPopup(FirebaseAuth, googleProvider);
 
@@ -21,7 +24,38 @@ export const singInWithGoogle = async () => {
   }
 };
 
-const signInWithCredentials = async ({ email, password }) => {
+const handlePhotoUpload = async (photo) => {
+  try {
+    const dataURL = await convertFileToDataURL(photo);
+    const photoRef = ref(
+      Storage,
+      `profile-photos/${Date.now()}_${Math.floor(Math.random() * 100000)}`
+    );
+    const photoSnapshot = await uploadString(photoRef, dataURL, "data_url");
+    return await getDownloadURL(photoSnapshot.ref);
+  } catch (error) {
+    console.error("Error uploading photo:", error);
+    return null;
+  }
+};
+
+const convertFileToDataURL = (file) => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = (error) => reject(error);
+    reader.readAsDataURL(file);
+  });
+};
+
+const signInWithCredentials = async ({
+  email,
+  password,
+  firstName,
+  lastName,
+  age,
+  photo,
+}) => {
   try {
     const resp = await createUserWithEmailAndPassword(
       FirebaseAuth,
@@ -29,7 +63,25 @@ const signInWithCredentials = async ({ email, password }) => {
       password
     );
 
-    return resp.user.uid;
+    const userId = resp.user.uid;
+
+    // Actualiza el perfil del usuario con nombre y apellido
+    await updateProfile(resp.user, {
+      displayName: `${firstName} ${lastName}`,
+      photoURL: photo,
+    });
+
+    // Almacena datos adicionales en Firestore
+    const userRef = doc(Firestore, "users", userId);
+    await setDoc(userRef, {
+      firstName,
+      lastName,
+      age,
+      email,
+      photo: photo || null,
+    });
+
+    return userId;
   } catch (e) {
     alert(e.message);
   }
@@ -60,6 +112,8 @@ const onAuthStateHasChanged = (setSession) => {
 const logoutFirebase = async () => await FirebaseAuth.signOut();
 
 export {
+  singInWithGoogle,
+  handlePhotoUpload,
   signInWithCredentials,
   loginWithCredentials,
   onAuthStateHasChanged,

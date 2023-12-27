@@ -46,9 +46,23 @@ export const AuthProvider = ({ children }) => {
     validateAuth(userId);
   };
 
-  const handleRegisterWithCredentials = async (password, email) => {
+  const handleRegisterWithCredentials = async (
+    password,
+    email,
+    firstName,
+    lastName,
+    age,
+    photo
+  ) => {
     checking();
-    const userId = await signInWithCredentials({ email, password });
+    const userId = await signInWithCredentials({
+      email,
+      password,
+      firstName,
+      lastName,
+      age,
+      photo,
+    });
     validateAuth(userId);
   };
 

@@ -1,6 +1,7 @@
 import { useState, useContext } from "react";
 import { useForm } from "../hooks/useForm";
 import { AuthContext } from "../context/authContext";
+import { handlePhotoUpload } from "../firebase/providers";
 
 export const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -11,24 +12,37 @@ export const AuthPage = () => {
     handleRegisterWithCredentials,
   } = useContext(AuthContext);
 
-  const { handleChange, pass, email } = useForm({
-    initialState: {
-      email: "",
-      pass: "",
-    },
-  });
+  const { handleChange, pass, email, firstName, lastName, age, photo } =
+    useForm({
+      initialState: {
+        email: "",
+        pass: "",
+        firstName: "",
+        lastName: "",
+        age: "",
+        photo: null,
+      },
+    });
 
   const handleSubmitLogin = (e) => {
     e.preventDefault();
     handleLoginWithCredentials(pass, email);
   };
 
-  const handleSubmitRegister = (e) => {
+  const handleSubmitRegister = async (e) => {
     e.preventDefault();
-    handleRegisterWithCredentials(pass, email);
+    const photoURL = photo ? await handlePhotoUpload(photo) : null;
+    handleRegisterWithCredentials(
+      pass,
+      email,
+      firstName,
+      lastName,
+      age,
+      photoURL
+    );
   };
 
-  const toggleForm = (e) => {
+  const toggleForm = () => {
     setIsLogin(!isLogin);
   };
 
@@ -92,7 +106,28 @@ export const AuthPage = () => {
           <div className="form-container sign-up">
             <form onSubmit={handleSubmitRegister}>
               <h1>Crear Cuenta</h1>
-              <span>ingresa tus datos para registrarte</span>
+              <span>Ingresa tus datos para registrarte</span>
+              <input
+                name="firstName"
+                type="text"
+                placeholder="Nombre"
+                onChange={handleChange}
+                value={firstName}
+              />
+              <input
+                name="lastName"
+                type="text"
+                placeholder="Apellido"
+                onChange={handleChange}
+                value={lastName}
+              />
+              <input
+                name="age"
+                type="number"
+                placeholder="Edad"
+                onChange={handleChange}
+                value={age}
+              />
               <input
                 name="email"
                 type="email"
@@ -106,6 +141,16 @@ export const AuthPage = () => {
                 placeholder="Contraseña"
                 onChange={handleChange}
                 value={pass}
+              />
+              <input
+                name="photo"
+                type="file"
+                accept="image/*"
+                onChange={(e) =>
+                  handleChange({
+                    target: { name: "photo", value: e.target.files[0] },
+                  })
+                }
               />
               <button className="button-common submit" type="submit">
                 Registrarse
