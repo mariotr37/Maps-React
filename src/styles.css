@@ -280,3 +280,17 @@ body {
 .container.active .toggle-right {
   transform: translateX(200%);
 }
+
+.loading span {
+  animation: fadeIn 0.5s infinite linear alternate;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0.2;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
