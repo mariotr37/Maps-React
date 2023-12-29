@@ -395,7 +395,8 @@ body {
   user-select: none;
 }
 
-.menu-bar li a {
+.menu-bar li a,
+.menu-bar li a:visited {
   display: flex;
   align-items: center;
   text-decoration: none;
@@ -407,11 +408,18 @@ body {
   margin: 5px 0;
 }
 
-.sidebar.active .menu li a {
+.sidebar.active .menu li a,
+.sidebar.active .menu li a:visited {
   color: #575757;
 }
 
+.menu-bar li a:active,
 .menu-bar li a:hover {
+  background: #dfd2e7;
+  color: #512da8;
+}
+
+.menu-bar li a.active {
   background: #dfd2e7;
   color: #512da8;
 }

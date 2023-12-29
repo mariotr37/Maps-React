@@ -1,5 +1,12 @@
+import { Sidebar } from "../ui";
+
 export const UpdateDataPage = () => {
   return (
-    <div>UpdateDataPage</div>
-  )
-}
+    <>
+      <Sidebar />
+      <section className="home">
+        <div>Hola</div>
+      </section>
+    </>
+  );
+};

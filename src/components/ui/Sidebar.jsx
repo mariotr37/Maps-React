@@ -1,9 +1,11 @@
 import { useContext, useState } from "react";
 import { AuthContext } from "../../context/authContext";
+import { Link, useLocation } from "react-router-dom";
 
 export const Sidebar = () => {
   const { handleLogOut } = useContext(AuthContext);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const location = useLocation();
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -26,18 +28,26 @@ export const Sidebar = () => {
         <div className="menu">
           <ul className="nav">
             <li>
-              <a>
+              <Link
+                to="/map"
+                className={location.pathname === "/map" ? "active" : ""}
+              >
                 <i className="bx bx-home-alt"></i>
                 <span className="link-name">Inicio</span>
-              </a>
+              </Link>
               <span className="tooltip">Inicio</span>
             </li>
 
             <li>
-              <a>
+              <Link
+                to="/edit-account"
+                className={
+                  location.pathname === "/edit-account" ? "active" : ""
+                }
+              >
                 <i className="bx bxs-edit"></i>
                 <span className="link-name">Editar Cuenta</span>
-              </a>
+              </Link>
               <span className="tooltip">Editar Cuenta</span>
             </li>
           </ul>
