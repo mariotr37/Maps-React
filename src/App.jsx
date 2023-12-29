@@ -1,22 +1,10 @@
-import { useContext } from "react";
-import { AuthPage, HomePage } from "./components";
-import { AuthContext } from "./context/authContext";
+import { AppRouter } from "./router/AppRouter";
+import { AuthProvider } from "./context/authContext";
 
-const App = () => {
-  const { status, userId } = useContext(AuthContext);
-
-  if (status === "checking")
-    return (
-      <p className="loading">
-        <span>Chequeando credenciales, espere un momento...</span>
-      </p>
-    );
-
+export const App = () => {
   return (
-    <main>
-      {status === "authenticated" && userId ? <HomePage /> : <AuthPage />}
-    </main>
+    <AuthProvider>
+      <AppRouter />
+    </AuthProvider>
   );
 };
-
-export default App;

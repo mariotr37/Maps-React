@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap");
+
 * {
   margin: 0;
   padding: 0;
@@ -293,4 +294,261 @@ body {
   100% {
     opacity: 1;
   }
+}
+
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 82px;
+  padding: 6px 16px;
+  box-shadow: 5px 0px 30px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  z-index: 1000;
+  background-color: #512da8;
+}
+
+.sidebar.active {
+  background: linear-gradient(to right, #ffffff, #ffffff00);
+  width: 300px;
+}
+
+.logo {
+  display: flex;
+  color: #512da8;
+  height: 50px;
+  width: 100%;
+  font-size: 30px;
+  margin-left: 15px;
+  align-items: center;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.sidebar.active .logo {
+  transition: all 0.9s ease;
+  opacity: 1;
+}
+
+.logo-name {
+  font-size: 23px;
+  font-weight: 600;
+  margin: -8px;
+}
+
+.logo-content #btn {
+  position: absolute;
+  color: #fff;
+  left: 50%;
+  top: 6px;
+  font-size: 20px;
+  height: 50px;
+  width: 50px;
+  text-align: center;
+  line-height: 50px;
+  transform: translate(-50%);
+  cursor: pointer;
+}
+
+.sidebar.active .logo-content #btn {
+  color: #512da8;
+  left: 90%;
+}
+
+.sidebar hr {
+  height: 1px;
+  width: 50px;
+  background-color: #fff;
+  border: none;
+  margin: 5px 0;
+  transition: all 0.3s ease;
+}
+
+.sidebar.active hr {
+  width: 100%;
+  background-color: #512da8;
+  margin: 10px 0;
+}
+
+.sidebar i {
+  height: 50px;
+  min-width: 50px;
+  border-radius: 12px;
+  line-height: 50px;
+  text-align: center;
+  font-size: 25px;
+}
+
+.menu ul {
+  margin-top: 10px;
+}
+
+.menu-bar li {
+  position: relative;
+  height: 50px;
+  width: 100%;
+  margin: 0;
+  list-style: none;
+  line-height: 50px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.menu-bar li a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #fff;
+  transition: all 0.3s ease;
+  border-radius: 12px;
+  font-size: 13px;
+  white-space: nowrap;
+  margin: 5px 0;
+}
+
+.sidebar.active .menu li a {
+  color: #575757;
+}
+
+.menu-bar li a:hover {
+  background: #dfd2e7;
+  color: #512da8;
+}
+
+.link-name {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.sidebar.active .link-name {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.menu-bar li .tooltip {
+  position: absolute;
+  top: 0;
+  left: 100%;
+  transform: translate(15%, -50%);
+  height: 35px;
+  width: 150px;
+  background-color: #fff;
+  border-radius: 12px;
+  color: #242424;
+  font-size: 13px;
+  line-height: 35px;
+  text-align: center;
+  display: block;
+  opacity: 0;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+.sidebar.active .menu-bar li .tooltip {
+  display: none;
+}
+
+.menu-bar li:hover .tooltip {
+  top: 50%;
+  opacity: 1;
+}
+
+.bottom-content {
+  position: absolute;
+  bottom: 5%;
+  left: 18%;
+  width: 65%;
+}
+
+.sidebar.active .bottom-content {
+  left: 5%;
+  width: 90%;
+}
+
+.sidebar.active .bottom-content li a {
+  justify-content: center;
+  color: #fff;
+  background-color: #512da8;
+  border-radius: 20px;
+  margin: 0;
+}
+
+.sidebar.active .bottom-content i {
+  margin-left: -20px;
+}
+
+.sidebar.active .bottom-content span {
+  margin-left: -8px;
+}
+
+.sidebar.active .bottom-content li a:hover {
+  background: none;
+  color: #512da8;
+  border: 1px solid #512da8;
+}
+
+.home {
+  position: absolute;
+  height: 95%;
+  width: calc(100% - 100px);
+  top: 3%;
+  left: 100px;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.text {
+  font-size: clamp(1.5rem, 5vw, 2rem);
+  background: linear-gradient(
+    0deg,
+    #9f37fa,
+    #8e19f2,
+    #7a13d1,
+    #6616a9,
+    #511682,
+    #3d145e
+  );
+  background-clip: text;
+  background-size: 1300px 100px;
+  font-weight: 900;
+  text-align: center;
+  line-height: 1.5;
+  color: transparent;
+  animation: rgb 5s infinite linear;
+  margin-left: -50px;
+}
+
+@keyframes rgb {
+  0% {
+    background-position: 0 0;
+  }
+  25% {
+    background-position: 0 100%;
+  }
+  50% {
+    background-position: 100% 100%;
+  }
+  75% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: 0 0;
+  }
+}
+
+.sidebar.active ~ .home {
+  width: calc(100% - 320px);
+  left: 320px;
+}
+
+.map-container {
+  position: absolute;
+  top: 10%;
+  left: 1%;
+  height: 90%;
+  width: 96%;
+  transition: all 0.3s ease;
 }

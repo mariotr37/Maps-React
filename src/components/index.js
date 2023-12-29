@@ -1,3 +1,3 @@
-export * from './HomePage'
-export * from './AuthPage'
-export * from './UpdateDataPage'
+export * from "./map";
+export * from "./pages";
+export * from "./ui";

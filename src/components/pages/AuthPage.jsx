@@ -1,7 +1,7 @@
 import { useState, useContext } from "react";
-import { useForm } from "../hooks/useForm";
-import { AuthContext } from "../context/authContext";
-import { handlePhotoUpload } from "../firebase/providers";
+import { useForm } from "../../hooks/useForm";
+import { AuthContext } from "../../context/authContext";
+import { handlePhotoUpload } from "../../firebase/providers";
 
 export const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -10,6 +10,7 @@ export const AuthPage = () => {
     handleLoginWithGoogle,
     handleLoginWithCredentials,
     handleRegisterWithCredentials,
+    status,
   } = useContext(AuthContext);
 
   const { handleChange, pass, email, firstName, lastName, age, photo } =
@@ -45,6 +46,14 @@ export const AuthPage = () => {
   const toggleForm = () => {
     setIsLogin(!isLogin);
   };
+
+  if (status === "checking") {
+    return (
+      <p className="loading">
+        <span>Chequeando credenciales, espere un momento...</span>
+      </p>
+    );
+  }
 
   return (
     <div className={`container ${isLogin ? "" : "active"}`}>

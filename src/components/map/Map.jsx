@@ -36,7 +36,5 @@ export const Map = () => {
     initializeMap();
   }, []);
 
-  return (
-    <div ref={mapContainerRef} style={{ height: "85vh", width: "150vh" }}></div>
-  );
+  return <div ref={mapContainerRef} className="map-container" />;
 };
