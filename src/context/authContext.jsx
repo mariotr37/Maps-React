@@ -1,10 +1,13 @@
 import { createContext, useEffect, useState } from "react";
 import {
+  getUserData,
   loginWithCredentials,
   logoutFirebase,
   onAuthStateHasChanged,
   signInWithCredentials,
   singInWithGoogle,
+  handlePhotoUpload,
+  updateProfileInfo,
 } from "../firebase/providers";
 
 const initialState = {
@@ -55,15 +58,46 @@ export const AuthProvider = ({ children }) => {
     photo
   ) => {
     checking();
+    const profilePhoto = photo ? await handlePhotoUpload(photo) : null;
     const userId = await signInWithCredentials({
       email,
       password,
       firstName,
       lastName,
       age,
-      photo,
+      profilePhoto,
     });
     validateAuth(userId);
+  };
+
+  const handleUpdateProfile = async (
+    oldPassword,
+    newPassword,
+    firstName,
+    lastName,
+    age,
+    photo
+  ) => {
+    const photoURL = photo ? await handlePhotoUpload(photo) : null;
+    const userId = await updateProfileInfo({
+      oldPassword,
+      newPassword,
+      firstName,
+      lastName,
+      age,
+      photoURL,
+    });
+    validateAuth(userId);
+  };
+
+  const fetchUserData = async (userId) => {
+    try {
+      const userData = await getUserData(userId);
+      return userData;
+    } catch (error) {
+      console.error("Error al obtener datos del usuario:", error);
+      return null;
+    }
   };
 
   return (
@@ -73,6 +107,8 @@ export const AuthProvider = ({ children }) => {
         handleLoginWithGoogle,
         handleLoginWithCredentials,
         handleRegisterWithCredentials,
+        handleUpdateProfile,
+        fetchUserData,
         handleLogOut,
       }}
     >

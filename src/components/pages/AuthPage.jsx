@@ -1,7 +1,6 @@
 import { useState, useContext } from "react";
 import { useForm } from "../../hooks/useForm";
 import { AuthContext } from "../../context/authContext";
-import { handlePhotoUpload } from "../../firebase/providers";
 
 export const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -30,17 +29,9 @@ export const AuthPage = () => {
     handleLoginWithCredentials(pass, email);
   };
 
-  const handleSubmitRegister = async (e) => {
+  const handleSubmitRegister = (e) => {
     e.preventDefault();
-    const photoURL = photo ? await handlePhotoUpload(photo) : null;
-    handleRegisterWithCredentials(
-      pass,
-      email,
-      firstName,
-      lastName,
-      age,
-      photoURL
-    );
+    handleRegisterWithCredentials(pass, email, firstName, lastName, age, photo);
   };
 
   const toggleForm = () => {
