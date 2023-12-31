@@ -341,10 +341,6 @@ input.error-input:focus + .password-toggle.error-input i {
   color: #db4a39;
 }
 
-.social-icons button i.fa-github {
-  color: #333;
-}
-
 .toggle-container {
   position: absolute;
   top: 0;

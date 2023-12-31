@@ -134,9 +134,6 @@ export const AuthPage = () => {
                 >
                   <i className="fa-brands fa-google-plus-g"></i>
                 </button>
-                <button className="icon">
-                  <i className="fa-brands fa-github"></i>
-                </button>
               </div>
               <span>o ingresa con tu cuenta</span>
               <input
