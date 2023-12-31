@@ -4,6 +4,9 @@ import { AuthContext } from "../../context/authContext";
 
 export const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
+  const [showPassword, setShowPassword] = useState(false);
+  const [errors, setErrors] = useState({});
+  const [submitted, setSubmitted] = useState(false);
 
   const {
     handleLoginWithGoogle,
@@ -24,18 +27,88 @@ export const AuthPage = () => {
       },
     });
 
+  const validateLogin = () => {
+    const errors = {};
+
+    if (!email.trim()) {
+      errors.email = "El correo electrónico es requerido";
+    }
+
+    if (!pass.trim()) {
+      errors.pass = "La contraseña es requerida";
+    }
+
+    setErrors(errors);
+
+    return Object.keys(errors).length === 0;
+  };
+
+  const validateRegister = () => {
+    const errors = {};
+
+    if (!firstName.trim()) {
+      errors.firstName = "El nombre es requerido";
+    }
+
+    if (!lastName.trim()) {
+      errors.lastName = "El apellido es requerido";
+    }
+
+    if (!age) {
+      errors.age = "La edad es requerida";
+    } else if (age < 1 || age > 100) {
+      errors.limitAge = "La edad debe estar entre 1 y 100";
+    }
+
+    if (!email.trim()) {
+      errors.email = "El correo electrónico es requerido";
+    }
+
+    if (!pass.trim()) {
+      errors.pass = "La contraseña es requerida";
+    } else if (pass.length < 6) {
+      errors.passLength = "La contraseña debe tener al menos 6 caracteres";
+    }
+
+    setErrors(errors);
+
+    return Object.keys(errors).length === 0;
+  };
+
   const handleSubmitLogin = (e) => {
     e.preventDefault();
-    handleLoginWithCredentials(pass, email);
+
+    setSubmitted(true);
+
+    if (validateLogin()) {
+      handleLoginWithCredentials(pass, email);
+      setShowPassword(false);
+    }
   };
 
   const handleSubmitRegister = (e) => {
     e.preventDefault();
-    handleRegisterWithCredentials(pass, email, firstName, lastName, age, photo);
+
+    setSubmitted(true);
+
+    if (validateRegister()) {
+      handleRegisterWithCredentials(
+        pass,
+        email,
+        firstName,
+        lastName,
+        age,
+        photo
+      );
+      setShowPassword(false);
+    }
   };
 
   const toggleForm = () => {
     setIsLogin(!isLogin);
+    setErrors({});
+    setSubmitted(false);
+    setShowPassword(false);
   };
 
   if (status === "checking") {
@@ -73,14 +146,38 @@ export const AuthPage = () => {
                 onChange={handleChange}
                 value={email}
               />
-              <input
-                name="pass"
-                type="password"
-                placeholder="Password"
-                onChange={handleChange}
-                value={pass}
-              />
-              <a href="#">¿Olvidaste tu contraseña?</a>
+              {submitted && errors.email && (
+                <div className="error-container">
+                  <i className="fa-solid fa-exclamation-circle"></i>
+                  <div className="error">{errors.email}</div>
+                </div>
+              )}
+              <div className="password-input-container">
+                <input
+                  name="pass"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Contraseña"
+                  onChange={handleChange}
+                  value={pass}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="password-toggle"
+                >
+                  {showPassword ? (
+                    <i className="fas fa-eye-slash"></i>
+                  ) : (
+                    <i className="fas fa-eye"></i>
+                  )}
+                </button>
+              </div>
+              {submitted && errors.pass && (
+                <div className="error-container">
+                  <i className="fa-solid fa-exclamation-circle"></i>
+                  <div className="error">{errors.pass}</div>
+                </div>
+              )}
               <button className="button-common submit" type="submit">
                 Iniciar Sesión
               </button>
@@ -124,38 +221,76 @@ export const AuthPage = () => {
               <input
                 name="firstName"
                 type="text"
-                placeholder="Nombre"
+                placeholder={
+                  submitted && errors.firstName ? errors.firstName : "Nombre"
+                }
                 onChange={handleChange}
                 value={firstName}
+                className={submitted && errors.firstName ? "error-input" : ""}
               />
               <input
                 name="lastName"
                 type="text"
-                placeholder="Apellido"
+                placeholder={
+                  submitted && errors.lastName ? errors.lastName : "Apellido"
+                }
                 onChange={handleChange}
                 value={lastName}
+                className={submitted && errors.lastName ? "error-input" : ""}
               />
               <input
                 name="age"
                 type="number"
-                placeholder="Edad"
+                placeholder={submitted && errors.age ? errors.age : "Edad"}
                 onChange={handleChange}
                 value={age}
+                className={submitted && errors.age ? "error-input" : ""}
               />
+              {submitted && errors.limitAge && (
+                <div className="error-container">
+                  <i className="fa-solid fa-exclamation-circle"></i>
+                  <div className="error">{errors.limitAge}</div>
+                </div>
+              )}
               <input
                 name="email"
                 type="email"
-                placeholder="E-mail"
+                placeholder={
+                  submitted && errors.email ? errors.email : "E-mail"
+                }
                 onChange={handleChange}
                 value={email}
+                className={submitted && errors.email ? "error-input" : ""}
               />
-              <input
-                name="pass"
-                type="password"
-                placeholder="Contraseña"
-                onChange={handleChange}
-                value={pass}
-              />
+              <div className="password-input-container">
+                <input
+                  name="pass"
+                  type={showPassword ? "text" : "password"}
+                  placeholder={
+                    submitted && errors.pass ? errors.pass : "Contraseña"
+                  }
+                  onChange={handleChange}
+                  value={pass}
+                  className={submitted && errors.pass ? "error-input" : ""}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className={`password-toggle ${submitted && errors.pass ? "error-input" : ""}`}
+                >
+                  {showPassword ? (
+                    <i className="fas fa-eye-slash"></i>
+                  ) : (
+                    <i className="fas fa-eye"></i>
+                  )}
+                </button>
+              </div>
+              {submitted && errors.passLength && (
+                <div className="error-container">
+                  <i className="fa-solid fa-exclamation-circle"></i>
+                  <div className="error">{errors.passLength}</div>
+                </div>
+              )}
               <button className="button-common submit" type="submit">
                 Registrarse
               </button>

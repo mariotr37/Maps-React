@@ -36,6 +36,15 @@ const singInWithGoogle = async () => {
 
     const { displayName, email, photoURL, uid } = result.user;
 
+    const userRef = doc(Firestore, "users", uid);
+    await setDoc(userRef, {
+      firstName: displayName.split(" ")[0],
+      lastName: displayName.split(" ")[1],
+      age: null,
+      email,
+      photo: photoURL || null,
+    });
+
     return uid;
   } catch (e) {
     alert(e.message);
@@ -52,7 +61,7 @@ const handlePhotoUpload = async (photo) => {
     const photoSnapshot = await uploadString(photoRef, dataURL, "data_url");
     return await getDownloadURL(photoSnapshot.ref);
   } catch (e) {
-    alert(e.message);
+    alert("Hubo un error al subir la foto");
     return null;
   }
 };
@@ -101,7 +110,7 @@ const signInWithCredentials = async ({
 
     return userId;
   } catch (e) {
-    alert(e.message);
+    alert("Hubo un error al crear la cuenta. Verifica tus credenciales.");
   }
 };
 
@@ -115,7 +124,7 @@ const loginWithCredentials = async ({ email, password }) => {
 
     return resp.user.uid;
   } catch (e) {
-    alert(e.message);
+    alert("Hubo un error al iniciar sesión. Verifica tus credenciales.");
   }
 };
 
@@ -131,7 +140,7 @@ const updateProfileInfo = async ({
     const user = FirebaseAuth.currentUser;
 
     if (!user) {
-      throw new Error("Usuario no autenticado");
+      throw new Error("No se encontró el usuario");
     }
 
     // Verificar si no se proporcionaron contraseñas nuevas y los demás datos son iguales a los existentes
